@@ -31,7 +31,20 @@ export class Authservice {
         }
     }
     async logoutAccount({ID}) {
-
+        try {
+          return  await this.account.deleteIdentity(ID)
+        } catch (error) {
+            console.log(error);
+            return false
+        }
+    }
+    async getCurrentAccount () {
+        try {
+            return await this.account.get();
+        } catch (error) {
+            console.log(error);
+            return false
+        }
     }
 }
 
