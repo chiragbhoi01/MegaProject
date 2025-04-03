@@ -1,21 +1,21 @@
 import conf from "../conf/conf";
-import { Client, Account, ID, Databases, Storage, Query } from "appwrite";
+import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
-  cilent = new Client();
+  client = new Client();
   databases;
   bucket;
   constructor() {
-    this.Client.setEndPoint(conf.appWriteUrl).setProject(
-      conf.appWriteProjectId
-    );
-    this.databases = new Databases(this.cilent);
-    this.bucket = new Storage(this.cilent);
+    this.client
+      .setEndpoint(conf.appWriteUrl)
+      .setProject(conf.appWriteProjectId);
+    this.databases = new Databases(this.client);
+    this.bucket = new Storage(this.client);
   }
   async createPost({ tittle, slug, content, featuredImage, status, userId }) {
     try {
       return await this.databases.createDocument(
-        conf.appWirteDataBaseId,
+        conf.appWriteDataBaseId,
         conf.appWriteCollectionId,
         slug,
         { tittle, content, featuredImage, status, userId }
@@ -95,12 +95,12 @@ export class Service {
       return false;
     }
   }
-  async filePreview(fileId){
+  async filePreview(fileId) {
     try {
-        return await this.bucket.getFilePreview(conf.appWriteBucketid,fileId)
+      return this.bucket.getFilePreview(conf.appWriteBucketid, fileId);
     } catch (error) {
-        console.log(error);
-        return false
+      console.log(error);
+      return false;
     }
   }
 }
